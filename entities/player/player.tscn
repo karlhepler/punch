@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://b6dqnvcodfk11"]
+
+[ext_resource type="Script" uid="uid://x7f5gspvfpoe" path="res://entities/player/player.gd" id="1_abrql"]
+[ext_resource type="Script" uid="uid://b57buauqmmtt" path="res://addons/2d_shapes/shapes/Ellipse.gd" id="2_sglur"]
+[ext_resource type="Script" uid="uid://dxrki0gbvhya8" path="res://addons/2d_shapes/shapes/Arrow.gd" id="3_bls4j"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sfv1e"]
+radius = 100.0
+
+[node name="Player" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_abrql")
+
+[node name="Circle" type="Node2D" parent="."]
+script = ExtResource("2_sglur")
+size = Vector2(200, 200)
+circle = true
+metadata/_custom_type_script = "uid://b57buauqmmtt"
+
+[node name="Arrow" type="Node2D" parent="."]
+position = Vector2(-80, 0)
+script = ExtResource("3_bls4j")
+target = Vector2(160, 0)
+head_width = 90.0
+fill_color = Color(0, 0, 0, 1)
+metadata/_custom_type_script = "uid://dxrki0gbvhya8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_sfv1e")

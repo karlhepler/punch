@@ -24,6 +24,15 @@ window/size/always_on_top=true
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/2d_shapes/plugin.cfg")
+
+[layer_names]
+
+2d_render/stretch/mode="canvas_items"
+2d_render/stretch/scale=3.0
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
