@@ -25,6 +25,8 @@ enabled=PackedStringArray("res://addons/2d_shapes/plugin.cfg")
 
 [layer_names]
 
+2d_physics/layer_1="Player 1"
+2d_physics/layer_2="Player 2"
 2d_render/stretch/mode="canvas_items"
 2d_render/stretch/scale=3.0
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://02e2n2gykb5o"]
+[gd_scene load_steps=12 format=3 uid="uid://02e2n2gykb5o"]
 
 [ext_resource type="PackedScene" uid="uid://b6dqnvcodfk11" path="res://entities/player/player.tscn" id="1_ig7tw"]
 
@@ -22,6 +22,11 @@ device = -1
 keycode = 83
 unicode = 115
 
+[sub_resource type="InputEventKey" id="InputEventKey_kek77"]
+device = -1
+keycode = 90
+unicode = 122
+
 [sub_resource type="InputEventKey" id="InputEventKey_lquwl"]
 device = -1
 keycode = 4194319
@@ -38,20 +43,31 @@ keycode = 4194320
 device = -1
 keycode = 4194322
 
+[sub_resource type="InputEventKey" id="InputEventKey_4c57u"]
+device = -1
+keycode = 47
+unicode = 47
+
 [node name="Main" type="Node2D"]
 
-[node name="Player 1" parent="." node_paths=PackedStringArray("enemy") instance=ExtResource("1_ig7tw")]
+[node name="Player 1" parent="." node_paths=PackedStringArray("enemy_player") instance=ExtResource("1_ig7tw")]
 position = Vector2(309, 325)
-enemy = NodePath("../Player 2")
+enemy_player = NodePath("../Player 2")
 input_move_left = Array[InputEvent]([SubResource("InputEventKey_ig7tw")])
 input_move_right = Array[InputEvent]([SubResource("InputEventKey_0xm2m")])
 input_move_up = Array[InputEvent]([SubResource("InputEventKey_h2yge")])
 input_move_down = Array[InputEvent]([SubResource("InputEventKey_1bvp3")])
+input_slap = Array[InputEvent]([SubResource("InputEventKey_kek77")])
+impact_layer = 1
+impact_mask = 2
 
-[node name="Player 2" parent="." node_paths=PackedStringArray("enemy") instance=ExtResource("1_ig7tw")]
+[node name="Player 2" parent="." node_paths=PackedStringArray("enemy_player") instance=ExtResource("1_ig7tw")]
 position = Vector2(917, 327)
-enemy = NodePath("../Player 1")
+enemy_player = NodePath("../Player 1")
 input_move_left = Array[InputEvent]([SubResource("InputEventKey_lquwl")])
 input_move_right = Array[InputEvent]([SubResource("InputEventKey_7mycd")])
 input_move_up = Array[InputEvent]([SubResource("InputEventKey_272bh")])
 input_move_down = Array[InputEvent]([SubResource("InputEventKey_5vw27")])
+input_slap = Array[InputEvent]([SubResource("InputEventKey_4c57u")])
+impact_layer = 2
+impact_mask = 1

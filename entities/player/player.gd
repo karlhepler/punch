@@ -4,11 +4,14 @@ const MOVE_LEFT = "move_left"
 const MOVE_RIGHT = "move_right"
 const MOVE_UP = "move_up"
 const MOVE_DOWN = "move_down"
-
-const SPEED = 1000.0
+const SLAP = "slap"
 
 # Configuration ----------------------------------------------------------------
-@export var enemy: Player
+@export_group("Player", "player_")
+@export var player_speed: float = 1000.0
+
+@export_group("Enemy", "enemy_")
+@export var enemy_player: Player
 
 @export_group("Input Map", "input_")
 @export var input_move_left: Array[InputEvent]:
@@ -19,25 +22,51 @@ const SPEED = 1000.0
 	set(val): _map_input_action(MOVE_UP, val)
 @export var input_move_down: Array[InputEvent]:
 	set(val): _map_input_action(MOVE_DOWN, val)
-	
+@export var input_slap: Array[InputEvent]:
+	set(val): _map_input_action(SLAP, val)
+
+@export_group("Impact", "impact_")
+@export var impact_layer: int
+@export var impact_mask: int
+
+# Signals ----------------------------------------------------------------------
+signal slapped(slapper: Player)
+
 # Dependencies -----------------------------------------------------------------
 @onready var slap_area: Area2D = $SlapArea
 
 # Built-In Methods -------------------------------------------------------------
 func _ready() -> void:
-	assert(enemy, 'enemy player missing')
-	assert(enemy != self, 'player cannot be its own enemy')
+	assert(enemy_player, 'enemy player missing')
+	assert(enemy_player != self, 'player cannot be its own enemy')
+	assert(impact_layer != 0, 'impact_layer is required')
+	assert(impact_mask != 0, 'impact_mask is required')
+	
+	collision_layer = impact_layer
+	collision_mask = impact_mask
+	slap_area.collision_layer = impact_layer
+	slap_area.collision_mask = impact_mask
+	
+	slapped.connect(_on_slapped)
 	
 func _physics_process(_delta: float) -> void:
-	look_at(enemy.global_position)
+	look_at(enemy_player.global_position)
 	
 	var direction = _get_input_vector(MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN)
-	velocity = direction * SPEED
+	velocity = direction * player_speed
 	
-	var overlapping_bodies = slap_area.get_overlapping_bodies()
-	print(overlapping_bodies) # TODO: use collision layers/masks for this
+	if Input.is_action_just_pressed(_get_input_action(SLAP)):
+		var slappies = slap_area.get_overlapping_bodies()
+		if len(slappies) > 0 and slappies[0] is Player:
+			slappies[0].slapped.emit(self)
 	
 	move_and_slide()
+	
+# Event Handlers ---------------------------------------------------------------
+
+## This is triggered when the player is slapped.
+func _on_slapped(slapper: Player):
+	print(slapper) # TODO: change state to slapped state
 
 # Private Methods --------------------------------------------------------------
 
